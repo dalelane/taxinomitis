@@ -21,7 +21,7 @@
         "TEACHER": "教師",
         "PROJECTS": "專案",
         "WORKSHEETS": "作品清單",
-        "PRETRAINED": "Pretrained",
+        "PRETRAINED": "預訓練模型",
         "NEWS": "新聞",
         "HELP": "幫助",
         "LOGIN": "登入",
@@ -48,7 +48,7 @@
             "LOGIN": "開始使用:"
         },
         "PRETRAINED": {
-            "BODY": "Pre-trained models are also provided for students to use in their projects. These advanced models enable projects that might otherwise be too complex for students to train for themselves, and provide useful hands-on insights into some of the other things that machine learning can do."
+            "BODY": "預訓練模型也可提供學生在他的專案中使用。 這些進階模型如果自己訓練可能太複雜，所以學生無法自己完成。這些模型也提供了有關機器學習可以完成各式各樣事情的實用建議。"
         },
         "FURTHER": {
             "TITLE": "進階學習",
@@ -760,9 +760,9 @@
             "TEXT1": "將文字轉換為數字的其中一種方法是計算一個單字被涵蓋的次數。"
         },
         "PAGE6": {
-            "TITLE": "提取特徵",
+            "TITLE": "特徵提取",
             "TEXT1": "你還可以計算其他事情。 有用的計數取決於您正在執行的項目以及你的模型要學會辨識內容的規律。",
-            "TEXT2": "計算次數是快速且簡單的，但不適合用在單字順序很重要的項目"
+            "TEXT2": "計算次數是快速且簡單的，但不適合用在詞語順序很重要的項目"
         },
         "PAGE7": {
             "TITLE": "建立詞語向量",
@@ -799,7 +799,7 @@
         "PAGE13": {
             "TITLE": "激勵函數",
             "TEXT1": "每個節點都存在其對應的<em>偏差值</em>",
-            "TEXT2": "每條線擁有自己的<em>權重</em>。"
+            "TEXT2": "每條線包含自己的<em>權重</em>。"
         },
         "PAGE14": {
             "TITLE": "隱藏層",
@@ -831,7 +831,7 @@
         },
         "PAGE19": {
             "TITLE": "類神經網路",
-            "TEXT1": "下一步，使用另一組你的訓練資料，再次完成所有步驟。"
+            "TEXT1": "接下來，使用另一組你的訓練資料，再次完成所有步驟。"
         },
         "PAGE20": {
             "TITLE": "編碼",
@@ -860,7 +860,7 @@
         "PAGE25": {
             "TITLE": "輸出層",
             "TEXT1": "記住，<em>輸出層</em>提供了機器學習模型的預測結果。",
-            "TEXT2": "每個節點都會從你添加到儲存貯體的訓練資料中進行預測"
+            "TEXT2": "每個節點都會從你添加到值區的訓練資料中進行預測"
         },
         "PAGE26": {
             "TITLE": "損失函數",
@@ -1665,17 +1665,17 @@
         },
 
         "PROJECTS": {
-            "TITLE": "專案問題",
+            "TITLE": "專案的問題",
 
             "Q1": "圖片專案與圖片<span class='mltinybadge badge'>beta</span>專案有什麼差別？",
             "Q1-A-1": "這兩種都可以用來建立相同種類的機器學習專案。不同的地方在於在哪裡建立與儲存模型。",
             "Q1-A-2": "在<strong>圖片</strong>專案中，機器學習模型將在雲端伺服器訓練，透過Watson視覺辨識的線上服務達成。",
             "Q1-A-3": "在<strong>圖片<span class='mltinybadge badge'>beta</span></strong>專案中，機器學習模型將在你自己電腦的網頁瀏覽器中訓練。",
             "Q1-A-4": "<strong>圖片</strong>專案的優點是：",
-            "Q1-A-5": "可以運用在Scratch、App inventor或是Python的專案中",
+            "Q1-A-5": "成果可以運用在Scratch、App inventor或是Python的專案中",
             "Q1-A-6": "即使你電腦的效能也差也沒關係，因為模型在雲端上訓練。",
             "Q1-A-7": "它可以建立更準確的模型，尤其是在使用少量訓練範例時。",
-            "Q1-A-8": "但是，等待開始雲端服務器訓練時需要花幾分鐘的時間，並且需要IBM Cloud的Watson API密碼（沒有班級管理的帳戶）",
+            "Q1-A-8": "但是，等待開始雲端服務器訓練時需要花幾分鐘的時間，並且需要IBM Cloud的Watson API密碼（對於沒有班級管理的帳戶）",
             "Q1-A-9": "「<strong style='color:black'>圖片<span class='mltinybadge badge'>beta</span></strong>」的優點包含：",
             "Q1-A-10": "它可以更快地完成訓練，因為它可以馬上開始，不需等待開啟雲端服務器的時間。",
             "Q1-A-11": "他不需要任何IBM Cloud的API密碼（對於沒有班級管理的帳戶）",
@@ -1683,7 +1683,7 @@
             "Q1-A-13": "但是，這只能用在Scratch專案中，而且需要學生使用效能夠快的電腦。",
             "Q1-A-14": "因為在網頁瀏覽器中訓練是新功能所以我們稱為beta。因此可能仍有一些操作環境或瀏覽器的問題。如果你發生錯誤，請回報問題到<a href='https://groups.google.com/d/forum/mlforkids'>兒童機器學習論壇</a>。",
 
-            "Q2": "如何將「圖片專案」切換成「圖片<span class='mltinybadge badge'>beta</span>專案」？（反之亦同）",
+            "Q2": "如何將「圖片專案」切換成「圖片<span class='mltinybadge badge'>beta</span>專案」？（反之也相同）",
             "Q2-A-1": "你可以在專案中的訓練頁面切換這兩種模式。",
             "Q2-A-2": "切換的連結在畫面的右上方。",
             "Q2-A-3": "完成後將刪除此專案中所有既有的機器學習模型。",
@@ -1902,10 +1902,10 @@
             "POSE_4": "這個模型的訓練資料來自於<a href='http://cocodataset.org/index.htm#keypoints-2019' target='_blank'>Common Objects in Context (COCO)</a>"
         },
         "TOXICITY": {
-            "TITLE": "Toxicity",
-            "TOXICITY_1": "This model can be used to recognize whether text contains toxic content.",
-            "TOXICITY_2": "It gives you blocks that will predict the percentage probability that some provided text contains toxic content such as threatening language, insults, obscenities, or identity-based hate.",
-            "TOXICITY_3": "The training data used for <a href='https://medium.com/tensorflow/text-classification-using-tensorflow-js-an-example-of-detecting-offensive-language-in-browser-e2b94e3565ce'>this model</a> came from <a href='https://figshare.com/articles/data_json/7376747' target='_blank'>two-million user-generated comments posted on news articles</a>."
+            "TITLE": "髒話辨識",
+            "TOXICITY_1": "這個模型可以用來辨識文字是否包含髒話",
+            "TOXICITY_2": "\b此功能提供了可以預測某些文字常見的髒話內容（例如威脅詞彙，侮辱性，淫穢或基於仇恨的仇恨內容）的百分比機率的積木程式。",
+            "TOXICITY_3": "<a href='https://medium.com/tensorflow/text-classification-using-tensorflow-js-an-example-of-detecting-offensive-language-in-browser-e2b94e3565ce'>這個模型</a>的訓練資料來自<a href='https://figshare.com/articles/data_json/7376747' target='_blank'>two-million user-generated comments posted on news articles</a>"
         },
         "IDEAS": {
             "IDEAS_1": "您是否希望在Scratch專案中使用其他機器學習模型？",
