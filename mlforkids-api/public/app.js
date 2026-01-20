@@ -159,6 +159,12 @@
                 templateUrl: 'static/components/describetextmodel/describemodel.html',
                 controllerAs: 'vm'
             })
+            .state('mlproject_regression_model_describe', {
+                url: '/mlproject/:userId/:projectId/models/regression/:modelId',
+                controller: 'RegressionDescribeController',
+                templateUrl: 'static/components/describeregression/describemodel.html',
+                controllerAs: 'vm'
+            })
             .state('mlproject_makes', {
                 url: '/mlproject/:userId/:projectId/makes',
                 controller: 'MakesController',
@@ -327,7 +333,7 @@
             .useSanitizeValueStrategy('sanitizeParameters')
             .useStaticFilesLoader({
                 prefix: 'static/languages/',
-                suffix: '.json?v=292'
+                suffix: '.json?v=297'
             })
             .determinePreferredLanguage(function () {
                 var lang = navigator.userLanguage || navigator.language;
