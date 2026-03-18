@@ -1929,7 +1929,7 @@
             "PROJECT_LIMITS": {
                 "TITLE": "Limites para projetos na nuvem criados pelos teus alunos",
                 "NUM_PROJECTS": "Cada um dos teus alunos pode ter até <span class='mlprojecttype'>{{ num }}</span> projetos na nuvem.",
-                "TRAINING_DATA": "Cada projeto de nuvem <span class='mlprojecttype'>{{ type }}</span> pode ter até <span class='mlprojecttype'>{{ num }}</span> exemplos de dados de treino."
+                "TRAINING_DATA": "Cada projeto de nuvem <span class='mlprojecttype'>{{ tipo }}</span> pode ter até <span class='mlprojecttype'>{{ num }}</span> exemplos de dados de treino."
             },
             "EXPIRY": {
                 "TITLE": "Para ajudar-te a evitar os limites para o número de modelos de machine learning:",
@@ -2073,7 +2073,7 @@
             "MANAGED": "Contas de turma com gestão",
             "MANAGEDEXPL": "Para professores, líderes de grupos de programação ou outros voluntários",
             "UNMANAGED": "Contas de turma sem gestão",
-            "UNMANAGEDEXPL": "Para funcionários da IBM, professores e líderes de grupos de programação que fazem a gestão das contas das suas próprias turmas"
+            "UNMANAGEDEXPL": "Para funcionários da IBM ou utilizadores que façam a gestão das contas das suas próprias turmas"
         },
         "FAQS": {
             "TITLE": "Queres saber mais?",
