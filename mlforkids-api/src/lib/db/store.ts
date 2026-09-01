@@ -2498,8 +2498,7 @@ export async function modifyClassTenantMaxUsers(
     ];
 
     const response = await dbExecute(queryName, queryString, queryValues);
-    if (response.rowCount !== 1 &&  // row inserted
-        response.rowCount !== 2)    // row updated
+    if (response.rowCount !== 1)
     {
         log.error({ response, queryValues }, 'Failed to update tenant info');
         throw new Error('Failed to update tenant info');
