@@ -2385,6 +2385,41 @@ export async function storeManagedClassTenant(classid: string, numstudents: numb
 }
 
 
+export async function updateManagedClassTenant(classid: string, numstudents: number, maxprojects: number, type: Objects.ClassTenantType): Promise<Objects.ClassTenant>
+{
+    const obj = dbobjects.createClassTenant(classid, [ 'text', 'numbers', 'sounds', 'imgtfjs' ]);
+    const NUM_USERS = numstudents + 1;
+
+    const queryName = 'dbqn-update-tenants';
+    const queryString = 'UPDATE tenants SET ' +
+                            'projecttypes = $2, ismanaged = $3, ' +
+                            'maxusers = $4, maxprojectsperuser = $5, ' +
+                            'textclassifiersexpiry = $6 ' +
+                        'WHERE id = $1';
+    const queryValues = [
+        obj.id, obj.projecttypes,
+        type, NUM_USERS,
+        maxprojects,
+        obj.textclassifiersexpiry,
+    ];
+
+    const response = await dbExecute(queryName, queryString, queryValues);
+    if (response.rowCount !== 1) {
+        log.error({ response, queryValues }, 'Failed to update managed tenant');
+        throw new Error('Failed to update managed tenant');
+    }
+    const updated = {
+        id : obj.id,
+        supportedProjectTypes : obj.projecttypes.split(',') as Objects.ProjectTypeLabel[],
+        tenantType : type,
+        maxUsers : NUM_USERS,
+        maxProjectsPerUser : maxprojects,
+        textClassifierExpiry : obj.textclassifiersexpiry,
+    };
+    return updated;
+}
+
+
 function getTenant(classid: string): Promise<Objects.ClassDbRow[]>
 {
     const queryName = 'dbqn-select-tenants-id';
