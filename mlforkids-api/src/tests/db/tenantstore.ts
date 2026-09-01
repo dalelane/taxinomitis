@@ -156,10 +156,11 @@ describe('DB store - tenants', () => {
         await store.deleteClassTenant(id);
     });
 
-    it('should modify max users for an existing tenant', async () => {
+    it('should modify max users for an existing unmanaged tenant, without changing its tenant type', async () => {
         const id = uuid();
         const created: Types.ClassTenant = await store.modifyClassTenantExpiries(id, 6);
         assert.strictEqual(created.maxUsers, 31);
+        assert.strictEqual(created.tenantType, Types.ClassTenantType.UnManaged);
 
         const updated: Types.ClassTenant = await store.modifyClassTenantMaxUsers(id, 75);
         assert.deepStrictEqual(updated, {
@@ -169,6 +170,28 @@ describe('DB store - tenants', () => {
             maxUsers : 75,
             maxProjectsPerUser : 3,
             textClassifierExpiry : 6,
+        });
+
+        const fetched: Types.ClassTenant = await store.getClassTenant(id);
+        assert.deepStrictEqual(fetched, updated);
+
+        await store.deleteClassTenant(id);
+    });
+
+    it('should modify max users for an existing managed tenant, without changing its tenant type', async () => {
+        const id = 'thisisthemanagedtenantformaxusers';
+        const created: Types.ClassTenant = await store.storeManagedClassTenant(id, 30, 3, Types.ClassTenantType.ManagedPool);
+        assert.strictEqual(created.maxUsers, 31);
+        assert.strictEqual(created.tenantType, Types.ClassTenantType.ManagedPool);
+
+        const updated: Types.ClassTenant = await store.modifyClassTenantMaxUsers(id, 75);
+        assert.deepStrictEqual(updated, {
+            id,
+            supportedProjectTypes : [ 'text', 'numbers', 'sounds', 'imgtfjs' ],
+            tenantType : Types.ClassTenantType.ManagedPool,
+            maxUsers : 75,
+            maxProjectsPerUser : 3,
+            textClassifierExpiry : 24,
         });
 
         const fetched: Types.ClassTenant = await store.getClassTenant(id);
