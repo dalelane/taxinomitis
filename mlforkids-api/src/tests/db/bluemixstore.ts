@@ -307,6 +307,130 @@ describe('DB store', () => {
         });
 
 
+        it('should retrieve the classifiers trained using a set of credentials', async () => {
+            const classid = uuid();
+            const userid = uuid();
+
+            const credsinfo = {
+                id : uuid(),
+                username : randomstring.generate({ length : 8 }),
+                password : randomstring.generate({ length : 20 }),
+                servicetype : 'conv',
+                url : 'http://conversation.service/api/workspaces',
+                classid,
+            };
+            const creds: Types.BluemixCredentialsDbRow = {
+                ...credsinfo,
+                credstypeid : projectObjects.credsTypesByLabel.conv_standard.id,
+            };
+            const storedcreds = await store.storeBluemixCredentials(classid, creds);
+
+            const emptyBefore = await store.getClassifiersUsingCredentials(storedcreds);
+            assert.deepStrictEqual(emptyBefore, []);
+
+            const project = await store.storeProject(userid, classid, 'text', uuid(), 'en', [], false);
+
+            const created = new Date();
+            created.setMilliseconds(0);
+
+            const classifierInfo: Types.ConversationWorkspace = {
+                id : uuid(),
+                workspace_id : randomstring.generate({ length : 32 }),
+                credentialsid : creds.id,
+                created,
+                expiry : created,
+                language : 'en',
+                name : randomstring.generate({ length : 12 }),
+                url : uuid(),
+            };
+            await store.storeConversationWorkspace(storedcreds, project, classifierInfo);
+
+            const retrieved = await store.getClassifiersUsingCredentials(storedcreds);
+            assert.strictEqual(retrieved.length, 1);
+            assert.deepStrictEqual(retrieved[0], {
+                id : classifierInfo.id,
+                credentialsid : creds.id,
+                userid,
+                projectid : project.id,
+                classid,
+                servicetype : 'conv',
+                classifierid : classifierInfo.workspace_id,
+                url : classifierInfo.url,
+                name : classifierInfo.name,
+                language : classifierInfo.language,
+                created,
+                expiry : created,
+            });
+
+            await store.deleteBluemixCredentials(creds.id);
+            await store.deleteConversationWorkspacesByProjectId(project.id);
+            await store.deleteEntireProject(userid, classid, project);
+        });
+
+
+        it('should retrieve the scratch keys using a set of credentials', async () => {
+            const classid = uuid();
+            const userid = uuid();
+
+            const credsinfo = {
+                id : uuid(),
+                username : randomstring.generate({ length : 8 }),
+                password : randomstring.generate({ length : 20 }),
+                servicetype : 'conv',
+                url : 'http://conversation.service/api/workspaces',
+                classid,
+            };
+            const creds: Types.BluemixCredentialsDbRow = {
+                ...credsinfo,
+                credstypeid : projectObjects.credsTypesByLabel.conv_standard.id,
+            };
+            const storedcreds = await store.storeBluemixCredentials(classid, creds);
+
+            const emptyBefore = await store.getScratchKeysUsingCredentials(storedcreds);
+            assert.deepStrictEqual(emptyBefore, []);
+
+            const project = await store.storeProject(userid, classid, 'text', uuid(), 'en', [], false);
+
+            const created = new Date();
+            created.setMilliseconds(0);
+
+            const classifierInfo: Types.ConversationWorkspace = {
+                id : uuid(),
+                workspace_id : randomstring.generate({ length : 32 }),
+                credentialsid : creds.id,
+                created,
+                expiry : created,
+                language : 'en',
+                name : randomstring.generate({ length : 12 }),
+                url : uuid(),
+            };
+            await store.storeConversationWorkspace(storedcreds, project, classifierInfo);
+
+            const scratchkeyid = await store.storeOrUpdateScratchKey(
+                project, storedcreds, classifierInfo.workspace_id, created);
+
+            const retrieved = await store.getScratchKeysUsingCredentials(storedcreds);
+            assert.strictEqual(retrieved.length, 1);
+            assert.deepStrictEqual(retrieved[0], {
+                id : scratchkeyid,
+                classid,
+                projectid : project.id,
+                projectname : project.name,
+                projecttype : 'text',
+                serviceurl : creds.url,
+                serviceusername : creds.username,
+                servicepassword : creds.password,
+                classifierid : classifierInfo.workspace_id,
+                updated : created,
+            });
+
+            await store.deleteScratchKey(scratchkeyid);
+            await store.deleteBluemixCredentials(creds.id);
+            await store.deleteConversationWorkspacesByProjectId(project.id);
+            await store.deleteEntireProject(userid, classid, project);
+        });
+
+
         it('should modify Conversation Bluemix credentials', async () => {
 
             const before = projectObjects.credsTypesByLabel.conv_lite;
