@@ -209,6 +209,44 @@ describe('DB store', () => {
             );
         });
 
+        it('should retrieve Bluemix credentials by class id without throwing when none exist', async () => {
+            const classid = uuid();
+
+            const retrieved = await store.getBluemixCredentialsByClassId(classid, 'conv');
+            assert.deepStrictEqual(retrieved, []);
+        });
+
+        it('should retrieve Bluemix credentials by class id', async () => {
+            const classid = uuid();
+
+            const credsinfo = {
+                id : uuid(),
+                username : randomstring.generate({ length : 8 }),
+                password : randomstring.generate({ length : 20 }),
+                servicetype : 'conv',
+                url : 'http://conversation.service/api/classifiers',
+                classid,
+            };
+
+            const creds: Types.BluemixCredentialsDbRow = {
+                ...credsinfo,
+                credstypeid : projectObjects.credsTypesByLabel.conv_standard.id,
+            };
+
+            await store.storeBluemixCredentials(classid, creds);
+
+            const retrieved = await store.getBluemixCredentialsByClassId(classid, 'conv');
+            assert.deepStrictEqual(retrieved, [ {
+                ...credsinfo,
+                credstype : 'conv_standard',
+            } ]);
+
+            const retrievedOtherService = await store.getBluemixCredentialsByClassId(classid, 'num');
+            assert.deepStrictEqual(retrievedOtherService, []);
+
+            await store.deleteBluemixCredentials(creds.id);
+        });
+
         it('should retrieve credentials for a classifier', async () => {
             const classid = uuid();
             const projectid = uuid();
