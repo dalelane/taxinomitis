@@ -1334,6 +1334,21 @@ export async function getBluemixCredentials(
     return response.rows.map(dbobjects.getCredentialsFromDbRow);
 }
 
+export async function getBluemixCredentialsByClassId(
+    classid: string, service: TrainingObjects.BluemixServiceType,
+): Promise<TrainingObjects.BluemixCredentials[]>
+{
+    const queryName = 'dbqn-select-bluemixcredentials-classid-safe';
+    const queryString = 'SELECT id, classid, servicetype, url, username, password, credstypeid ' +
+                        'FROM bluemixcredentials ' +
+                        'WHERE classid = $1 AND servicetype = $2';
+    const queryValues = [ classid, service ];
+
+    const response = await dbExecute(queryName, queryString, queryValues);
+    return response.rows.map(dbobjects.getCredentialsFromDbRow);
+}
+
+
 export async function getBluemixCredentialsPoolBatch(
     service: TrainingObjects.BluemixServiceType,
 ): Promise<TrainingObjects.BluemixCredentials[]>

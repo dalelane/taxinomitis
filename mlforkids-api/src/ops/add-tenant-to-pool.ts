@@ -3,6 +3,7 @@
 import * as store from '../lib/db/store';
 import * as dbobjects from '../lib/db/objects';
 import * as dbtypes from '../lib/db/db-types';
+import * as credentialsmgr from '../lib/training/credentials';
 
 const opsArgs = process.argv.slice(2);
 
@@ -48,6 +49,17 @@ async function addTenantToPool(): Promise<dbtypes.ClassTenant>
 
     if (!onlyExpiryIsDifferent) {
         throw new Error('Existing tenant record is not in a recognised state - refusing to modify it automatically');
+    }
+
+    // an unmanaged tenant's text classifiers are trained using their own Watson API keys
+    //  (in the bluemixcredentials table). Moving them into the managed pool means their
+    //  students will use the site's own pool of keys (bluemixcredentialspool) instead, so
+    //  any of their own keys - and the classifiers trained with them - would be orphaned
+    //  if left behind. They need to be cleaned up before the tenant record is updated.
+    const ownCredentials = await store.getBluemixCredentialsByClassId(tenantid, 'conv');
+    for (const credentials of ownCredentials) {
+        console.log('removing unmanaged text classifier credentials', credentials.id, '...');
+        await credentialsmgr.deleteBluemixCredentials(credentials);
     }
 
     console.log('existing tenant record only has a customised text classifier expiry - updating it to add to the pool...');
