@@ -2561,6 +2561,45 @@ export async function modifyClassTenantExpiries(
 }
 
 
+export async function modifyClassTenantMaxUsers(
+    classid: string,
+    maxusers: number,
+): Promise<Objects.ClassTenant>
+{
+    const tenantinfo = await getClassTenant(classid);
+
+    const modified = dbobjects.setClassTenantMaxUsers(tenantinfo, maxusers);
+    const obj = dbobjects.getClassDbRow(modified);
+
+    const queryName = 'dbqn-insert-tenants-maxusers';
+    const queryString = 'INSERT INTO tenants ' +
+                            '(id, projecttypes, ' +
+                                'maxusers, maxprojectsperuser, ' +
+                                'textclassifiersexpiry, ' +
+                                'ismanaged) ' +
+                            'VALUES ($1, $2, $3, $4, $5, $6) ' +
+                            'ON CONFLICT(id) DO UPDATE SET ' +
+                                'maxusers = $7';
+    const queryValues = [
+        obj.id, obj.projecttypes,
+        obj.maxusers, obj.maxprojectsperuser,
+        obj.textclassifiersexpiry,
+        obj.ismanaged,
+        //
+        obj.maxusers,
+    ];
+
+    const response = await dbExecute(queryName, queryString, queryValues);
+    if (response.rowCount !== 1)
+    {
+        log.error({ response, queryValues }, 'Failed to update tenant info');
+        throw new Error('Failed to update tenant info');
+    }
+
+    return modified;
+}
+
+
 export async function deleteClassTenant(classid: string): Promise<void>
 {
     const queryName = 'dbqn-delete-tenants-id';
